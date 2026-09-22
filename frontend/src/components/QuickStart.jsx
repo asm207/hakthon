@@ -45,18 +45,18 @@ export default function QuickStart({ apiKey }) {
   return (
     <Card icon="terminal" title="Quick start" subtitle="Create your first payment from your own code" delay={0.24}
       action={<CopyButton text={real} />}>
-      <div className="mb-3 flex gap-1 rounded-lg bg-slate-950/70 p-1 ring-1 ring-white/10">
+      <div className="mb-3 flex gap-1 rounded-lg bg-zinc-950/70 p-1 ring-1 ring-white/10">
         {Object.keys(snippets('')).map((l) => (
           <button key={l} onClick={() => setLang(l)}
-            className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition ${lang === l ? 'bg-white/10 text-white' : 'text-slate-400 hover:text-slate-200'}`}>
+            className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition ${lang === l ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-zinc-200'}`}>
             {l}
           </button>
         ))}
       </div>
-      <pre key={lang} className="console-scroll animate-fade-up overflow-x-auto rounded-lg bg-slate-950 p-3 font-mono text-[11px] leading-relaxed text-sky-100 ring-1 ring-white/5">
+      <pre key={lang} className="console-scroll animate-fade-up overflow-x-auto rounded-lg bg-zinc-950 p-3 font-mono text-[11px] leading-relaxed text-zinc-200 ring-1 ring-white/5">
         {shown}
       </pre>
-      <p className="mt-2 text-[11px] text-slate-500">Copy includes your full API key. Keep it private.</p>
+      <p className="mt-2 text-[11px] text-zinc-500">Copy includes your full API key. Keep it private.</p>
     </Card>
   )
 }

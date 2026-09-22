@@ -49,8 +49,8 @@ export default function App() {
 
   if (session === undefined) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <span className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-blue-400" />
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
+        <span className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-700 border-t-white" />
       </div>
     )
   }
@@ -136,8 +136,8 @@ function Dashboard({ session, onSignOut }) {
   const secure = API_ORIGIN.startsWith('https://')
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-950 lg:h-screen">
-      <nav className="relative z-20 shrink-0 bg-slate-950/90 backdrop-blur">
+    <div className="flex min-h-screen flex-col bg-zinc-950 lg:h-screen">
+      <nav className="relative z-20 shrink-0 bg-zinc-950/90 backdrop-blur">
         <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex items-center gap-2.5">
             <Logo className="h-7 w-7" />
@@ -153,7 +153,7 @@ function Dashboard({ session, onSignOut }) {
               {API_ORIGIN.replace(/^https?:\/\//, '')}
             </span>
             <a href={`${API_ORIGIN}/docs`} target="_blank" rel="noreferrer"
-              className="rounded-lg px-2.5 py-1.5 font-semibold text-slate-300 ring-1 ring-white/10 transition hover:bg-white/5 hover:text-white">
+              className="rounded-lg px-2.5 py-1.5 font-semibold text-zinc-300 ring-1 ring-white/10 transition hover:bg-white/5 hover:text-white">
               API docs
             </a>
             <AccountMenu session={session} onSignOut={onSignOut} />

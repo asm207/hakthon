@@ -1,13 +1,13 @@
 export const STATUS_STYLES = {
   pending: { badge: 'bg-amber-400/15 text-amber-500 ring-amber-400/30', dot: 'bg-amber-400' },
-  processing: { badge: 'bg-blue-400/15 text-blue-500 ring-blue-400/30', dot: 'bg-blue-400' },
+  processing: { badge: 'bg-zinc-400/15 text-zinc-400 ring-zinc-400/30', dot: 'bg-zinc-300' },
   success: { badge: 'bg-emerald-400/15 text-emerald-500 ring-emerald-400/30', dot: 'bg-emerald-400' },
   failed: { badge: 'bg-rose-400/15 text-rose-500 ring-rose-400/30', dot: 'bg-rose-400' },
   timeout: { badge: 'bg-orange-400/15 text-orange-500 ring-orange-400/30', dot: 'bg-orange-400' },
-  refunded: { badge: 'bg-cyan-400/15 text-cyan-500 ring-cyan-400/30', dot: 'bg-cyan-400' },
+  refunded: { badge: 'bg-zinc-500/15 text-zinc-500 ring-zinc-500/30', dot: 'bg-zinc-500' },
 }
 
-const FALLBACK = { badge: 'bg-slate-400/15 text-slate-500 ring-slate-400/30', dot: 'bg-slate-400' }
+const FALLBACK = { badge: 'bg-zinc-400/15 text-zinc-500 ring-zinc-400/30', dot: 'bg-zinc-400' }
 
 export default function StatusBadge({ status, size = 'sm' }) {
   const style = STATUS_STYLES[status] ?? FALLBACK

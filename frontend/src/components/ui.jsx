@@ -15,7 +15,7 @@ export function CopyButton({ text, className = '' }) {
   return (
     <button type="button" onClick={copy}
       className={`inline-flex shrink-0 items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
-        copied ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/10 text-slate-200 hover:bg-white/15'} ${className}`}>
+        copied ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/10 text-zinc-200 hover:bg-white/15'} ${className}`}>
       <Icon name={copied ? 'check' : 'copy'} className="h-3.5 w-3.5" />
       {copied ? 'Copied' : 'Copy'}
     </button>
@@ -26,7 +26,7 @@ export function CopyButton({ text, className = '' }) {
 export function Card({ icon, title, subtitle, action, children, className = '', delay = 0 }) {
   return (
     <div
-      className={`spotlight relative animate-fade-up rounded-2xl border border-white/[0.07] bg-slate-900/70 p-5 shadow-xl shadow-black/30 backdrop-blur-sm transition-colors duration-300 hover:border-white/[0.14] ${className}`}
+      className={`spotlight relative animate-fade-up rounded-2xl border border-white/[0.07] bg-zinc-900/70 p-5 shadow-xl shadow-black/30 backdrop-blur-sm transition-colors duration-300 hover:border-white/[0.14] ${className}`}
       style={{ animationDelay: `${delay}s` }}
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect()
@@ -37,13 +37,13 @@ export function Card({ icon, title, subtitle, action, children, className = '', 
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           {icon && (
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/5 text-slate-300 ring-1 ring-white/10">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/5 text-zinc-300 ring-1 ring-white/10">
               <Icon name={icon} className="h-4 w-4" />
             </span>
           )}
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold text-slate-100">{title}</h3>
-            {subtitle && <p className="truncate text-xs text-slate-500">{subtitle}</p>}
+            <h3 className="text-sm font-semibold text-zinc-100">{title}</h3>
+            {subtitle && <p className="truncate text-xs text-zinc-500">{subtitle}</p>}
           </div>
         </div>
         {action && <div className="shrink-0">{action}</div>}
@@ -55,7 +55,7 @@ export function Card({ icon, title, subtitle, action, children, className = '', 
 
 export function JsonBlock({ value }) {
   return (
-    <pre className="console-scroll max-h-64 overflow-auto rounded-lg bg-slate-950 p-3 font-mono text-[11px] leading-relaxed text-slate-300 ring-1 ring-white/5">
+    <pre className="console-scroll max-h-64 overflow-auto rounded-lg bg-zinc-950 p-3 font-mono text-[11px] leading-relaxed text-zinc-300 ring-1 ring-white/5">
       {JSON.stringify(value, null, 2)}
     </pre>
   )

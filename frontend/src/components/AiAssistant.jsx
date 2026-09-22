@@ -18,10 +18,10 @@ const AiButton = ({ onClick, loading, children }) => (
   <button
     onClick={onClick}
     disabled={loading}
-    className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-slate-950 shadow-lg shadow-black/40 ring-1 ring-white/20 transition hover:bg-slate-200 disabled:cursor-wait disabled:opacity-70"
+    className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-zinc-950 shadow-lg shadow-black/40 ring-1 ring-white/20 transition hover:bg-zinc-200 disabled:cursor-wait disabled:opacity-70"
   >
     {loading
-      ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
+      ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-zinc-950/30 border-t-zinc-950" />
       : <Icon name="sparkles" className="h-3.5 w-3.5" />}
     {loading ? 'Asking Gemini…' : children}
   </button>
@@ -29,7 +29,7 @@ const AiButton = ({ onClick, loading, children }) => (
 
 const AiPanel = ({ children }) => (
   <div className="rounded-lg border border-white/15 bg-white/[0.04] p-3">
-    <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-300">
+    <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-300">
       <Icon name="sparkles" className="h-3.5 w-3.5" /> Gemini
     </p>
     {children}
@@ -55,14 +55,14 @@ export function DebugExplainer({ entry }) {
       {error && <p className="text-xs text-rose-300">{error}</p>}
       {data && (
         <AiPanel>
-          <dl className="space-y-2 text-xs leading-relaxed text-slate-200">
-            <div><dt className="font-semibold text-white">Problem</dt><dd className="text-slate-300">{data.problem}</dd></div>
-            <div><dt className="font-semibold text-white">Cause</dt><dd className="text-slate-300">{data.cause}</dd></div>
-            <div><dt className="font-semibold text-white">Fix</dt><dd className="text-slate-300">{data.fix}</dd></div>
+          <dl className="space-y-2 text-xs leading-relaxed text-zinc-200">
+            <div><dt className="font-semibold text-white">Problem</dt><dd className="text-zinc-300">{data.problem}</dd></div>
+            <div><dt className="font-semibold text-white">Cause</dt><dd className="text-zinc-300">{data.cause}</dd></div>
+            <div><dt className="font-semibold text-white">Fix</dt><dd className="text-zinc-300">{data.fix}</dd></div>
             {data.corrected_payload && (
               <div>
                 <dt className="font-semibold text-white">Corrected payload</dt>
-                <dd><pre className="mt-1 overflow-x-auto rounded-md bg-black/60 p-2 font-mono text-[11px] text-slate-100 ring-1 ring-white/10">{prettyJson(data.corrected_payload)}</pre></dd>
+                <dd><pre className="mt-1 overflow-x-auto rounded-md bg-black/60 p-2 font-mono text-[11px] text-zinc-100 ring-1 ring-white/10">{prettyJson(data.corrected_payload)}</pre></dd>
               </div>
             )}
           </dl>
@@ -83,7 +83,7 @@ export function AuditSummary({ paymentId }) {
       {error && <p className="text-xs text-rose-300">{error}</p>}
       {data && (
         <AiPanel>
-          <p className="text-xs leading-relaxed text-slate-200">{data.summary}</p>
+          <p className="text-xs leading-relaxed text-zinc-200">{data.summary}</p>
         </AiPanel>
       )}
     </div>

@@ -6,10 +6,10 @@ const STEP_NAMES = ['Create payment', 'Idempotency replay', 'Query payment', 'Fo
 const REVEAL_DELAY_MS = 350
 
 function StepIcon({ status }) {
-  if (status === 'passed') return <span className="flex h-6 w-6 animate-pop items-center justify-center rounded-full bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/40"><Icon name="check" className="h-3.5 w-3.5" strokeWidth={3} /></span>
+  if (status === 'passed') return <span className="flex h-6 w-6 animate-pop items-center justify-center rounded-full bg-emerald-500 text-zinc-950 shadow-lg shadow-emerald-500/40"><Icon name="check" className="h-3.5 w-3.5" strokeWidth={3} /></span>
   if (status === 'failed') return <span className="flex h-6 w-6 animate-pop items-center justify-center rounded-full bg-rose-500 text-white"><Icon name="x" className="h-3.5 w-3.5" strokeWidth={3} /></span>
-  if (status === 'running') return <span className="h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-emerald-400" />
-  return <span className="h-6 w-6 rounded-full border-2 border-dashed border-slate-700" />
+  if (status === 'running') return <span className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-700 border-t-emerald-400" />
+  return <span className="h-6 w-6 rounded-full border-2 border-dashed border-zinc-700" />
 }
 
 /** One click runs POST /api/v1/sandbox/smoke-test; results are revealed step by step. */
@@ -57,14 +57,14 @@ export default function SmokeTestPanel({ call, notify }) {
         <button
           onClick={run}
           disabled={running}
-          className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-slate-950 shadow-lg shadow-emerald-900/30 transition hover:bg-emerald-400 disabled:cursor-wait disabled:opacity-70"
+          className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-zinc-950 shadow-lg shadow-black/30 transition hover:bg-zinc-200 disabled:cursor-wait disabled:opacity-70"
         >
           <Icon name="play" className="h-3.5 w-3.5" />
           {running ? 'Running…' : 'Run Smoke Test'}
         </button>
       }
     >
-      <div className="mb-4 h-1 overflow-hidden rounded-full bg-slate-800">
+      <div className="mb-4 h-1 overflow-hidden rounded-full bg-zinc-800">
         <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-300 shadow-[0_0_12px_rgb(16_185_129/0.7)] transition-all duration-500 ease-out" style={{ width: `${(done / STEP_NAMES.length) * 100}%` }} />
       </div>
       <ol className="space-y-3">
@@ -73,10 +73,10 @@ export default function SmokeTestPanel({ call, notify }) {
             <StepIcon status={step.status} />
             <div className="min-w-0 flex-1">
               <div className="flex justify-between gap-2 text-sm">
-                <span className={step.status === 'idle' ? 'text-slate-500' : 'font-medium text-slate-100'}>{step.name}</span>
-                {step.duration_ms !== undefined && <span className="font-mono text-xs tabular-nums text-slate-500">{step.duration_ms} ms</span>}
+                <span className={step.status === 'idle' ? 'text-zinc-500' : 'font-medium text-zinc-100'}>{step.name}</span>
+                {step.duration_ms !== undefined && <span className="font-mono text-xs tabular-nums text-zinc-500">{step.duration_ms} ms</span>}
               </div>
-              {step.detail && <p className="truncate text-xs text-slate-500" title={step.detail}>{step.detail}</p>}
+              {step.detail && <p className="truncate text-xs text-zinc-500" title={step.detail}>{step.detail}</p>}
             </div>
           </li>
         ))}

@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
 const AURORA = {
-  dark: ['bg-blue-600/35', 'bg-cyan-500/25', 'bg-emerald-500/20', 'bg-sky-400/20'],
-  light: ['bg-blue-400/35', 'bg-cyan-300/45', 'bg-emerald-300/35', 'bg-sky-300/40'],
+  dark: ['bg-white/[0.13]', 'bg-zinc-400/20', 'bg-white/[0.09]', 'bg-zinc-300/15'],
+  light: ['bg-zinc-400/40', 'bg-zinc-300/60', 'bg-zinc-500/25', 'bg-zinc-200/80'],
 }
 
 /** Floating light particles that rise slowly (clearly visible motion). */
@@ -18,7 +18,7 @@ function Particles({ count, tone }) {
       })),
     [count],
   )
-  const color = tone === 'dark' ? 'bg-cyan-200/70 shadow-[0_0_8px_rgb(103_232_249/0.8)]' : 'bg-blue-500/40'
+  const color = tone === 'dark' ? 'bg-white/70 shadow-[0_0_8px_rgb(255_255_255/0.7)]' : 'bg-zinc-900/30'
   return dots.map((d, i) => (
     <span
       key={i}
@@ -43,7 +43,7 @@ export function Aurora({ tone = 'dark', particles = 28 }) {
   )
 }
 
-const COLORS = ['#2563eb', '#06b6d4', '#10b981', '#f59e0b', '#38bdf8', '#ffffff']
+const COLORS = ['#18181b', '#52525b', '#a1a1aa', '#10b981', '#d4d4d8', '#27272a']
 
 /** A short one-off burst of confetti from the centre of its (relative) parent. */
 export function Confetti({ count = 26 }) {

@@ -27,8 +27,8 @@
     to { stroke-dashoffset: 0; }
   }
   @keyframes pulse-ring {
-    0% { box-shadow: 0 0 0 0 rgb(37 99 235 / 0.5); }
-    100% { box-shadow: 0 0 0 12px rgb(37 99 235 / 0); }
+    0% { box-shadow: 0 0 0 0 rgb(24 24 27 / 0.35); }
+    100% { box-shadow: 0 0 0 12px rgb(24 24 27 / 0); }
   }
   @keyframes confetti {
     0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
@@ -37,7 +37,7 @@
 }
 
 body {
-  @apply bg-slate-950 font-sans antialiased;
+  @apply bg-zinc-950 font-sans antialiased;
 }
 
 /* A light sweep that crosses the whole element, edge to edge (parent needs position + overflow hidden). */
@@ -104,7 +104,7 @@ body {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(56 189 248 / 0.09), transparent 45%);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.06), transparent 45%);
 }
 .spotlight:hover::before { opacity: 1; }
 
@@ -117,7 +117,7 @@ body {
 
 /* Moving gradient line (under the top bar) */
 .gradient-line {
-  background: linear-gradient(90deg, transparent, #2563eb, #06b6d4, #10b981, #38bdf8, transparent);
+  background: linear-gradient(90deg, transparent, #52525b, #ffffff, #52525b, transparent);
   background-size: 200% 100%;
   animation: gradient-x 6s linear infinite;
 }
@@ -138,12 +138,12 @@ body {
 /* Slim dark scrollbars for the console */
 .console-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgb(51 65 85) transparent;
+  scrollbar-color: rgb(63 63 70) transparent;
 }
 
 /* Subtle dot grid behind the developer console */
 .dot-grid {
-  background-image: radial-gradient(rgb(148 163 184 / 0.13) 1px, transparent 1px);
+  background-image: radial-gradient(rgb(161 161 170 / 0.13) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 

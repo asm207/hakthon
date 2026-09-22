@@ -25,39 +25,39 @@ export default function AccountMenu({ session, onSignOut }) {
     <div ref={ref} className="relative">
       <button onClick={() => setOpen(!open)} aria-expanded={open}
         className="flex items-center gap-2 rounded-lg py-1 pl-1 pr-2 ring-1 ring-white/10 transition hover:bg-white/5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-sky-500 text-xs font-bold text-white">
+        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-xs font-bold text-zinc-950">
           {merchant.name.slice(0, 1).toUpperCase()}
         </span>
-        <span className="hidden max-w-[10rem] truncate text-xs font-semibold text-slate-200 sm:block">{merchant.name}</span>
-        <Icon name="chevron" className={`h-3.5 w-3.5 text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <span className="hidden max-w-[10rem] truncate text-xs font-semibold text-zinc-200 sm:block">{merchant.name}</span>
+        <Icon name="chevron" className={`h-3.5 w-3.5 text-zinc-400 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-80 animate-pop rounded-2xl border border-white/10 bg-slate-900/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-xl"
+        <div className="absolute right-0 top-full z-50 mt-2 w-80 animate-pop rounded-2xl border border-white/10 bg-zinc-900/95 p-4 shadow-2xl shadow-black/50 backdrop-blur-xl"
           style={{ transformOrigin: 'top right' }}>
           <p className="text-sm font-semibold text-white">{merchant.name}</p>
-          <p className="text-xs text-slate-400">{demo ? 'Shared demo account' : merchant.email}</p>
+          <p className="text-xs text-zinc-400">{demo ? 'Shared demo account' : merchant.email}</p>
 
           <div className="mt-4">
-            <p className="mb-1.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+            <p className="mb-1.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
               <Icon name="key" className="h-3.5 w-3.5" /> Sandbox API key
             </p>
-            <div className="flex items-center gap-1.5 rounded-lg bg-slate-950 p-2 ring-1 ring-white/10">
+            <div className="flex items-center gap-1.5 rounded-lg bg-zinc-950 p-2 ring-1 ring-white/10">
               <code className="min-w-0 flex-1 truncate font-mono text-[11px] text-emerald-300">{reveal ? apiKey : masked}</code>
               <button onClick={() => setReveal(!reveal)} title={reveal ? 'Hide' : 'Show'}
-                className="rounded-md p-1.5 text-slate-400 transition hover:bg-white/10 hover:text-white">
+                className="rounded-md p-1.5 text-zinc-400 transition hover:bg-white/10 hover:text-white">
                 <Icon name="eye" className="h-3.5 w-3.5" />
               </button>
               <CopyButton text={apiKey} />
             </div>
-            <p className="mt-2 text-[11px] leading-relaxed text-slate-500">
-              Use it in <a href={`${API_ORIGIN}/docs`} target="_blank" rel="noreferrer" className="font-semibold text-sky-400 hover:underline">API docs</a> → Authorize,
-              or send <span className="font-mono text-slate-400">Authorization: Bearer</span> from your own code.
+            <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">
+              Use it in <a href={`${API_ORIGIN}/docs`} target="_blank" rel="noreferrer" className="font-semibold text-white underline decoration-white/30 hover:decoration-white">API docs</a> → Authorize,
+              or send <span className="font-mono text-zinc-400">Authorization: Bearer</span> from your own code.
             </p>
           </div>
 
           <button onClick={onSignOut}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 py-2 text-xs font-semibold text-slate-300 transition hover:bg-white/5 hover:text-white">
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-white/5 hover:text-white">
             <Icon name="logout" className="h-3.5 w-3.5" /> Sign out
           </button>
         </div>
