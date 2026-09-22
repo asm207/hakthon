@@ -18,18 +18,18 @@ const AiButton = ({ onClick, loading, children }) => (
   <button
     onClick={onClick}
     disabled={loading}
-    className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-fuchsia-600 to-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-fuchsia-900/30 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-70"
+    className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-300 to-orange-400 px-3 py-1.5 text-xs font-semibold text-slate-950 shadow-lg shadow-amber-900/30 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-70"
   >
     {loading
-      ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+      ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
       : <Icon name="sparkles" className="h-3.5 w-3.5" />}
     {loading ? 'Asking Gemini…' : children}
   </button>
 )
 
 const AiPanel = ({ children }) => (
-  <div className="rounded-lg border border-fuchsia-500/25 bg-gradient-to-br from-fuchsia-500/10 to-violet-500/5 p-3">
-    <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-fuchsia-300">
+  <div className="rounded-lg border border-amber-400/25 bg-gradient-to-br from-amber-400/10 to-orange-500/5 p-3">
+    <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
       <Icon name="sparkles" className="h-3.5 w-3.5" /> Gemini
     </p>
     {children}

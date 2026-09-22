@@ -6,11 +6,18 @@ import AuthScreen from './components/AuthScreen.jsx'
 import Icon, { Logo } from './components/icons.jsx'
 import MerchantStore from './components/MerchantStore.jsx'
 import SandboxConsole from './components/SandboxConsole.jsx'
+import Toaster from './components/Toaster.jsx'
 
 const FINAL_STATUSES = new Set(['success', 'failed', 'timeout', 'refunded'])
 const POLL_INTERVAL_MS = 1000
 
 const newOrder = () => ({ reference: newReference(), idempotencyKey: newIdempotencyKey() })
+
+const FINAL_TOASTS = {
+  success: { tone: 'success', title: 'Payment succeeded' },
+  failed: { tone: 'error', title: 'Payment declined' },
+  timeout: { tone: 'warning', title: 'Payment timed out' },
+}
 
 export default function App() {
   // undefined = still checking the saved session, null = signed out
@@ -43,7 +50,7 @@ export default function App() {
   if (session === undefined) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <span className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-indigo-400" />
+        <span className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-blue-400" />
       </div>
     )
   }
@@ -57,11 +64,25 @@ function Dashboard({ session, onSignOut }) {
   const [log, setLog] = useState([])
   const [busy, setBusy] = useState(false)
   const [refunding, setRefunding] = useState(false)
+  const [statuses, setStatuses] = useState({}) // payment id -> latest status (for the stats bar)
+  const [toasts, setToasts] = useState([])
   // One Idempotency-Key per checkout attempt: clicking "Pay" twice can never charge twice.
   const order = useRef(newOrder())
 
   const addLog = useCallback((entry) => {
     setLog((prev) => [{ ...entry, id: crypto.randomUUID() }, ...prev].slice(0, 50))
+  }, [])
+
+  const dismiss = useCallback((id) => setToasts((t) => t.filter((x) => x.id !== id)), [])
+  const notify = useCallback((toast) => {
+    const id = crypto.randomUUID()
+    setToasts((t) => [...t.slice(-3), { ...toast, id }])
+    setTimeout(() => dismiss(id), 4000)
+  }, [dismiss])
+
+  const updatePayment = useCallback((p) => {
+    setPayment(p)
+    setStatuses((m) => ({ ...m, [p.id]: p.status }))
   }, [])
 
   const call = useCallback(async (method, path, options) => {
@@ -76,11 +97,15 @@ function Dashboard({ session, onSignOut }) {
     const timer = setTimeout(async () => {
       const res = await apiRequest('GET', `/api/v1/payments/${payment.id}`)
       if (!res.ok) return addLog(res)
-      if (res.data.status !== payment.status) addLog(res)
-      setPayment(res.data)
+      if (res.data.status !== payment.status) {
+        addLog(res)
+        const toast = FINAL_TOASTS[res.data.status]
+        if (toast) notify({ ...toast, text: `${res.data.amount} ${res.data.currency} · ${res.data.reference}` })
+      }
+      updatePayment(res.data)
     }, POLL_INTERVAL_MS)
     return () => clearTimeout(timer)
-  }, [payment, addLog])
+  }, [payment, addLog, notify, updatePayment])
 
   const pay = async () => {
     setBusy(true)
@@ -88,7 +113,8 @@ function Dashboard({ session, onSignOut }) {
       body: { amount: '100.00', currency: 'LYD', reference: order.current.reference, simulation_mode: mode },
       idempotencyKey: order.current.idempotencyKey,
     })
-    if (res.ok) setPayment(res.data)
+    if (res.ok) updatePayment(res.data)
+    else notify({ tone: 'error', title: 'Payment request failed', text: res.data?.error?.message })
     setBusy(false)
   }
 
@@ -100,7 +126,10 @@ function Dashboard({ session, onSignOut }) {
   const refund = async () => {
     setRefunding(true)
     const res = await call('POST', `/api/v1/payments/${payment.id}/refund`, { idempotencyKey: newIdempotencyKey() })
-    if (res.ok) setPayment(res.data)
+    if (res.ok) {
+      updatePayment(res.data)
+      notify({ tone: 'info', title: 'Refund completed', text: `${res.data.amount} ${res.data.currency} returned` })
+    } else notify({ tone: 'error', title: 'Refund failed', text: res.data?.error?.message })
     setRefunding(false)
   }
 
@@ -143,9 +172,13 @@ function Dashboard({ session, onSignOut }) {
           refunding={refunding}
           log={log}
           call={call}
-          onCreated={setPayment}
+          onCreated={updatePayment}
+          statuses={statuses}
+          apiKey={session.apiKey}
+          notify={notify}
         />
       </div>
+      <Toaster toasts={toasts} onDismiss={dismiss} />
     </div>
   )
 }

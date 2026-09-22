@@ -25,7 +25,7 @@ export default function AccountMenu({ session, onSignOut }) {
     <div ref={ref} className="relative">
       <button onClick={() => setOpen(!open)} aria-expanded={open}
         className="flex items-center gap-2 rounded-lg py-1 pl-1 pr-2 ring-1 ring-white/10 transition hover:bg-white/5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-indigo-500 to-fuchsia-500 text-xs font-bold text-white">
+        <span className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-sky-500 text-xs font-bold text-white">
           {merchant.name.slice(0, 1).toUpperCase()}
         </span>
         <span className="hidden max-w-[10rem] truncate text-xs font-semibold text-slate-200 sm:block">{merchant.name}</span>

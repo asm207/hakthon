@@ -1,24 +1,49 @@
 import { useMemo } from 'react'
 
 const AURORA = {
-  dark: ['bg-indigo-600/25', 'bg-fuchsia-600/20', 'bg-sky-500/15'],
-  light: ['bg-indigo-300/40', 'bg-fuchsia-300/35', 'bg-sky-300/30'],
+  dark: ['bg-blue-600/35', 'bg-cyan-500/25', 'bg-emerald-500/20', 'bg-sky-400/20'],
+  light: ['bg-blue-400/35', 'bg-cyan-300/45', 'bg-emerald-300/35', 'bg-sky-300/40'],
 }
 
-/** Site-wide animated background: drifting aurora glows (+ a moving dot grid on dark surfaces). */
-export function Aurora({ tone = 'dark' }) {
-  const [a, b, c] = AURORA[tone]
+/** Floating light particles that rise slowly (clearly visible motion). */
+function Particles({ count, tone }) {
+  const dots = useMemo(
+    () =>
+      Array.from({ length: count }, () => ({
+        left: `${Math.random() * 100}%`,
+        size: 2 + Math.random() * 3,
+        duration: `${12 + Math.random() * 14}s`,
+        delay: `${-Math.random() * 26}s`,
+        drift: `${(Math.random() - 0.5) * 80}px`,
+      })),
+    [count],
+  )
+  const color = tone === 'dark' ? 'bg-cyan-200/70 shadow-[0_0_8px_rgb(103_232_249/0.8)]' : 'bg-blue-500/40'
+  return dots.map((d, i) => (
+    <span
+      key={i}
+      className={`particle absolute bottom-0 rounded-full ${color}`}
+      style={{ left: d.left, width: d.size, height: d.size, animationDuration: d.duration, animationDelay: d.delay, '--drift': d.drift }}
+    />
+  ))
+}
+
+/** Site-wide animated background: drifting aurora glows, rising particles and a moving dot grid. */
+export function Aurora({ tone = 'dark', particles = 28 }) {
+  const [a, b, c, d] = AURORA[tone]
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       {tone === 'dark' && <div className="dot-grid dot-grid-drift absolute inset-0" />}
-      <div className={`aurora-1 absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full blur-3xl ${a}`} />
-      <div className={`aurora-2 absolute -bottom-48 -right-40 h-[34rem] w-[34rem] rounded-full blur-3xl ${b}`} />
-      <div className={`aurora-3 absolute left-1/3 top-1/3 h-72 w-72 rounded-full blur-3xl ${c}`} />
+      <div className={`aurora-1 absolute -left-40 -top-40 h-[32rem] w-[32rem] rounded-full blur-3xl ${a}`} />
+      <div className={`aurora-2 absolute -bottom-48 -right-40 h-[36rem] w-[36rem] rounded-full blur-3xl ${b}`} />
+      <div className={`aurora-3 absolute left-1/3 top-1/3 h-80 w-80 rounded-full blur-3xl ${c}`} />
+      <div className={`aurora-4 absolute right-1/4 top-0 h-64 w-64 rounded-full blur-3xl ${d}`} />
+      <Particles count={particles} tone={tone} />
     </div>
   )
 }
 
-const COLORS = ['#6366f1', '#a855f7', '#10b981', '#f59e0b', '#ec4899', '#38bdf8']
+const COLORS = ['#2563eb', '#06b6d4', '#10b981', '#f59e0b', '#38bdf8', '#ffffff']
 
 /** A short one-off burst of confetti from the centre of its (relative) parent. */
 export function Confetti({ count = 26 }) {

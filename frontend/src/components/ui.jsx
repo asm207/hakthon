@@ -26,8 +26,13 @@ export function CopyButton({ text, className = '' }) {
 export function Card({ icon, title, subtitle, action, children, className = '', delay = 0 }) {
   return (
     <div
-      className={`animate-fade-up rounded-2xl border border-white/[0.07] bg-slate-900/70 p-5 shadow-xl shadow-black/30 backdrop-blur-sm transition-colors duration-300 hover:border-white/[0.12] ${className}`}
+      className={`spotlight relative animate-fade-up rounded-2xl border border-white/[0.07] bg-slate-900/70 p-5 shadow-xl shadow-black/30 backdrop-blur-sm transition-colors duration-300 hover:border-white/[0.14] ${className}`}
       style={{ animationDelay: `${delay}s` }}
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect()
+        e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
+        e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
+      }}
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">

@@ -13,7 +13,7 @@ function StepIcon({ status }) {
 }
 
 /** One click runs POST /api/v1/sandbox/smoke-test; results are revealed step by step. */
-export default function SmokeTestPanel({ call }) {
+export default function SmokeTestPanel({ call, notify }) {
   const [running, setRunning] = useState(false)
   const [steps, setSteps] = useState(STEP_NAMES.map((name) => ({ name, status: 'idle' })))
   const [summary, setSummary] = useState(null)
@@ -28,6 +28,7 @@ export default function SmokeTestPanel({ call }) {
     if (!res.ok) {
       setSteps(STEP_NAMES.map((name) => ({ name, status: 'idle' })))
       setSummary({ passed: false, text: res.data?.error?.message || `Request failed (${res.status})` })
+      notify?.({ tone: 'error', title: 'Smoke test could not run', text: res.data?.error?.message })
       setRunning(false)
       return
     }
@@ -36,6 +37,9 @@ export default function SmokeTestPanel({ call }) {
       await new Promise((r) => setTimeout(r, REVEAL_DELAY_MS))
       setSteps((prev) => prev.map((s, j) => (j === i ? result.steps[i] : s)))
     }
+    notify?.(result.passed
+      ? { tone: 'success', title: 'Smoke test passed', text: `${result.steps.length}/${result.steps.length} steps in ${(result.total_ms / 1000).toFixed(1)} s` }
+      : { tone: 'error', title: 'Smoke test failed', text: result.steps.find((s) => s.status === 'failed')?.name })
     setSummary({
       passed: result.passed,
       text: result.passed ? `All ${result.steps.length} steps passed in ${(result.total_ms / 1000).toFixed(1)} s` : 'Smoke test failed',

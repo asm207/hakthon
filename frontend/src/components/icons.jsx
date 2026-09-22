@@ -35,8 +35,8 @@ export function Logo({ className = 'h-8 w-8' }) {
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
       <defs>
         <linearGradient id="paysim-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#6366f1" />
-          <stop offset="1" stopColor="#a855f7" />
+          <stop offset="0" stopColor="#2563eb" />
+          <stop offset="1" stopColor="#06b6d4" />
         </linearGradient>
       </defs>
       <rect width="32" height="32" rx="8" fill="url(#paysim-g)" />

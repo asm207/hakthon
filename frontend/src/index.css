@@ -27,8 +27,8 @@
     to { stroke-dashoffset: 0; }
   }
   @keyframes pulse-ring {
-    0% { box-shadow: 0 0 0 0 rgb(99 102 241 / 0.5); }
-    100% { box-shadow: 0 0 0 12px rgb(99 102 241 / 0); }
+    0% { box-shadow: 0 0 0 0 rgb(37 99 235 / 0.5); }
+    100% { box-shadow: 0 0 0 12px rgb(37 99 235 / 0); }
   }
   @keyframes confetti {
     0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
@@ -55,28 +55,69 @@ body {
   55%, 100% { transform: translateX(100%); }
 }
 
-/* Slowly drifting aurora glows used as the site-wide animated background */
-.aurora-1 { animation: aurora-1 18s ease-in-out infinite; }
-.aurora-2 { animation: aurora-2 24s ease-in-out infinite; }
-.aurora-3 { animation: aurora-3 30s ease-in-out infinite; }
+/* Drifting aurora glows used as the site-wide animated background (clearly visible motion) */
+.aurora-1 { animation: aurora-1 11s ease-in-out infinite; }
+.aurora-2 { animation: aurora-2 14s ease-in-out infinite; }
+.aurora-3 { animation: aurora-3 17s ease-in-out infinite; }
+.aurora-4 { animation: aurora-4 9s ease-in-out infinite; }
 @keyframes aurora-1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(18vw, 12vh) scale(1.15); }
-  66% { transform: translate(6vw, 30vh) scale(0.9); }
+  25% { transform: translate(35vw, 15vh) scale(1.25); }
+  50% { transform: translate(20vw, 45vh) scale(0.85); }
+  75% { transform: translate(-5vw, 25vh) scale(1.1); }
 }
 @keyframes aurora-2 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-22vw, -18vh) scale(1.2); }
+  33% { transform: translate(-35vw, -25vh) scale(1.3); }
+  66% { transform: translate(-10vw, -45vh) scale(0.9); }
 }
 @keyframes aurora-3 {
   0%, 100% { transform: translate(0, 0) scale(0.9); }
-  33% { transform: translate(-14vw, 16vh) scale(1.1); }
-  66% { transform: translate(12vw, -10vh) scale(1); }
+  25% { transform: translate(-25vw, 20vh) scale(1.2); }
+  50% { transform: translate(15vw, 30vh) scale(1); }
+  75% { transform: translate(25vw, -15vh) scale(1.15); }
+}
+@keyframes aurora-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  50% { transform: translate(-30vw, 35vh) scale(1.4); opacity: 1; }
+}
+
+/* Rising particles */
+.particle {
+  animation-name: particle-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes particle-rise {
+  0% { transform: translate(0, 10px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.8; }
+  100% { transform: translate(var(--drift), -105vh); opacity: 0; }
+}
+
+/* Soft light that follows the mouse over a card (set --mx / --my from JS) */
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(56 189 248 / 0.09), transparent 45%);
+}
+.spotlight:hover::before { opacity: 1; }
+
+/* Toast entrance: slides in from the right */
+.toast-in { animation: toast-in 0.45s cubic-bezier(0.2, 1.2, 0.4, 1) both; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(40px) scale(0.96); }
+  to { opacity: 1; transform: none; }
 }
 
 /* Moving gradient line (under the top bar) */
 .gradient-line {
-  background: linear-gradient(90deg, transparent, #6366f1, #a855f7, #38bdf8, #10b981, transparent);
+  background: linear-gradient(90deg, transparent, #2563eb, #06b6d4, #10b981, #38bdf8, transparent);
   background-size: 200% 100%;
   animation: gradient-x 6s linear infinite;
 }
@@ -87,7 +128,7 @@ body {
 
 /* Dot grid that drifts slowly */
 .dot-grid-drift {
-  animation: grid-drift 14s linear infinite;
+  animation: grid-drift 6s linear infinite;
 }
 @keyframes grid-drift {
   from { background-position: 0 0; }
@@ -102,7 +143,7 @@ body {
 
 /* Subtle dot grid behind the developer console */
 .dot-grid {
-  background-image: radial-gradient(rgb(148 163 184 / 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(rgb(148 163 184 / 0.13) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 

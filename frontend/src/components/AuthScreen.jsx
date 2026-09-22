@@ -24,7 +24,7 @@ function Field({ label, type = 'text', value, onChange, autoComplete, error, pla
         placeholder={placeholder}
         required
         className={`w-full rounded-xl border bg-slate-950/60 px-3.5 py-2.5 text-sm text-white placeholder:text-slate-600 transition focus:outline-none focus:ring-2 ${
-          error ? 'border-rose-500/60 focus:ring-rose-500/30' : 'border-white/10 focus:border-indigo-400/60 focus:ring-indigo-500/25'}`}
+          error ? 'border-rose-500/60 focus:ring-rose-500/30' : 'border-white/10 focus:border-blue-400/60 focus:ring-blue-500/25'}`}
       />
       {error && <span className="mt-1 block text-xs text-rose-300">{error}</span>}
     </label>
@@ -88,7 +88,7 @@ export default function AuthScreen({ onAuthenticated }) {
           </div>
           <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
             Test payments
-            <span className="block bg-gradient-to-r from-indigo-400 via-fuchsia-400 to-sky-400 bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-sky-300 via-cyan-300 to-emerald-300 bg-clip-text text-transparent">
               without real money.
             </span>
           </h1>
@@ -108,7 +108,7 @@ export default function AuthScreen({ onAuthenticated }) {
           <ul className="mt-8 hidden space-y-4 sm:block">
             {FEATURES.map((f, i) => (
               <li key={f.title} className="flex animate-fade-up gap-3" style={{ animationDelay: `${0.5 + i * 0.1}s` }}>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/5 text-indigo-300 ring-1 ring-white/10">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/5 text-blue-300 ring-1 ring-white/10">
                   <Icon name={f.icon} className="h-4 w-4" />
                 </span>
                 <div>
@@ -141,7 +141,7 @@ export default function AuthScreen({ onAuthenticated }) {
               </p>
               <button
                 onClick={() => onAuthenticated({ ...issued, demo: false })}
-                className="shine relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white shadow-lg shadow-indigo-900/40 transition hover:-translate-y-0.5"
+                className="shine relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 py-3 font-semibold text-white shadow-lg shadow-blue-900/40 transition hover:-translate-y-0.5"
               >
                 Open the sandbox console
               </button>
@@ -174,7 +174,7 @@ export default function AuthScreen({ onAuthenticated }) {
                 )}
 
                 <button type="submit" disabled={busy}
-                  className="shine relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white shadow-lg shadow-indigo-900/40 transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70">
+                  className="shine relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 py-3 font-semibold text-white shadow-lg shadow-blue-900/40 transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70">
                   {busy && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />}
                   {mode === 'register' ? 'Create account & get API key' : 'Sign in'}
                 </button>

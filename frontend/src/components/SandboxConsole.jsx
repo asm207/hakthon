@@ -4,7 +4,9 @@ import { AuditSummary } from './AiAssistant.jsx'
 import { Aurora } from './effects.jsx'
 import Icon from './icons.jsx'
 import RequestLog from './RequestLog.jsx'
+import QuickStart from './QuickStart.jsx'
 import SmokeTestPanel from './SmokeTestPanel.jsx'
+import StatsBar from './StatsBar.jsx'
 import StatusBadge, { STATUS_STYLES } from './StatusBadge.jsx'
 import { Card } from './ui.jsx'
 
@@ -67,7 +69,7 @@ function TransactionCard({ payment, onRefund, refunding }) {
           onClick={onRefund}
           disabled={refunding || payment.status !== 'success'}
           title={payment.status !== 'success' ? 'Refunds are only allowed for successful payments' : ''}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-violet-900/30 transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg shadow-cyan-900/30 transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none"
         >
           <Icon name="refund" className="h-3.5 w-3.5" />
           {refunding ? 'Refunding…' : 'Request Refund'}
@@ -120,7 +122,7 @@ function RequestPlayground({ call, mode, onCreated }) {
   )
 }
 
-export default function SandboxConsole({ mode, onModeChange, payment, onRefund, refunding, log, call, onCreated }) {
+export default function SandboxConsole({ mode, onModeChange, payment, onRefund, refunding, log, call, onCreated, statuses, apiKey, notify }) {
   return (
     <section className="console-scroll relative bg-slate-950 px-4 py-8 text-slate-100 sm:px-8 lg:overflow-y-auto">
       <Aurora tone="dark" />
@@ -146,12 +148,16 @@ export default function SandboxConsole({ mode, onModeChange, payment, onRefund, 
           </div>
         </header>
 
+        <StatsBar statuses={statuses} />
+
         <TransactionCard payment={payment} onRefund={onRefund} refunding={refunding} />
 
         <div className="grid gap-5 2xl:grid-cols-2">
-          <SmokeTestPanel call={call} />
+          <SmokeTestPanel call={call} notify={notify} />
           <RequestPlayground call={call} mode={mode} onCreated={onCreated} />
         </div>
+
+        <QuickStart apiKey={apiKey} />
 
         <Card icon="list" title="Request log" subtitle="Every call the UI made, newest first. Failed calls can be explained by Gemini." delay={0.28}>
           <RequestLog log={log} />

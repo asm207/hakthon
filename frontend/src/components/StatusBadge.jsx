@@ -1,10 +1,10 @@
 export const STATUS_STYLES = {
   pending: { badge: 'bg-amber-400/15 text-amber-500 ring-amber-400/30', dot: 'bg-amber-400' },
-  processing: { badge: 'bg-sky-400/15 text-sky-500 ring-sky-400/30', dot: 'bg-sky-400' },
+  processing: { badge: 'bg-blue-400/15 text-blue-500 ring-blue-400/30', dot: 'bg-blue-400' },
   success: { badge: 'bg-emerald-400/15 text-emerald-500 ring-emerald-400/30', dot: 'bg-emerald-400' },
   failed: { badge: 'bg-rose-400/15 text-rose-500 ring-rose-400/30', dot: 'bg-rose-400' },
   timeout: { badge: 'bg-orange-400/15 text-orange-500 ring-orange-400/30', dot: 'bg-orange-400' },
-  refunded: { badge: 'bg-violet-400/15 text-violet-500 ring-violet-400/30', dot: 'bg-violet-400' },
+  refunded: { badge: 'bg-cyan-400/15 text-cyan-500 ring-cyan-400/30', dot: 'bg-cyan-400' },
 }
 
 const FALLBACK = { badge: 'bg-slate-400/15 text-slate-500 ring-slate-400/30', dot: 'bg-slate-400' }

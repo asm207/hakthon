@@ -9,7 +9,7 @@ function statusStyle(status) {
   return 'bg-rose-500/10 text-rose-400 ring-rose-500/20'
 }
 
-const METHOD_STYLE = { GET: 'text-sky-400', POST: 'text-violet-400' }
+const METHOD_STYLE = { GET: 'text-sky-400', POST: 'text-amber-300' }
 
 function Entry({ entry }) {
   const [open, setOpen] = useState(!entry.ok)
