@@ -18,7 +18,7 @@ const AiButton = ({ onClick, loading, children }) => (
   <button
     onClick={onClick}
     disabled={loading}
-    className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-300 to-orange-400 px-3 py-1.5 text-xs font-semibold text-slate-950 shadow-lg shadow-amber-900/30 transition hover:brightness-110 disabled:cursor-wait disabled:opacity-70"
+    className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-slate-950 shadow-lg shadow-black/40 ring-1 ring-white/20 transition hover:bg-slate-200 disabled:cursor-wait disabled:opacity-70"
   >
     {loading
       ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />
@@ -28,8 +28,8 @@ const AiButton = ({ onClick, loading, children }) => (
 )
 
 const AiPanel = ({ children }) => (
-  <div className="rounded-lg border border-amber-400/25 bg-gradient-to-br from-amber-400/10 to-orange-500/5 p-3">
-    <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
+  <div className="rounded-lg border border-white/15 bg-white/[0.04] p-3">
+    <p className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-300">
       <Icon name="sparkles" className="h-3.5 w-3.5" /> Gemini
     </p>
     {children}
@@ -62,7 +62,7 @@ export function DebugExplainer({ entry }) {
             {data.corrected_payload && (
               <div>
                 <dt className="font-semibold text-white">Corrected payload</dt>
-                <dd><pre className="mt-1 overflow-x-auto rounded-md bg-slate-950/80 p-2 font-mono text-[11px] text-emerald-300">{prettyJson(data.corrected_payload)}</pre></dd>
+                <dd><pre className="mt-1 overflow-x-auto rounded-md bg-black/60 p-2 font-mono text-[11px] text-slate-100 ring-1 ring-white/10">{prettyJson(data.corrected_payload)}</pre></dd>
               </div>
             )}
           </dl>
