@@ -4,9 +4,13 @@
 // Empty = same origin (the deployed backend serves this UI itself).
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL || ''
 export const API_ORIGIN = BASE_URL || window.location.origin
-const API_KEY = import.meta.env.VITE_PAYSIM_API_KEY || ''
+// Built-in demo merchant key (optional). Signed-in merchants use their own key instead.
+export const DEMO_API_KEY = import.meta.env.VITE_PAYSIM_API_KEY || ''
 
-export const hasApiKey = Boolean(API_KEY)
+let API_KEY = ''
+export function setApiKey(key) {
+  API_KEY = key || ''
+}
 
 function maskKey(key) {
   return key ? `Bearer ${key.slice(0, 8)}••••${key.slice(-4)}` : '(none)'
@@ -18,14 +22,14 @@ function maskKey(key) {
  * @param {{ body?: any, idempotencyKey?: string }} [options]
  */
 export async function apiRequest(method, path, { body, idempotencyKey } = {}) {
-  const headers = { Authorization: `Bearer ${API_KEY}` }
+  const headers = API_KEY ? { Authorization: `Bearer ${API_KEY}` } : {}
   if (body !== undefined) headers['Content-Type'] = 'application/json'
   if (idempotencyKey) headers['Idempotency-Key'] = idempotencyKey
 
   const request = {
     method,
     path,
-    headers: { ...headers, Authorization: maskKey(API_KEY) },
+    headers: API_KEY ? { ...headers, Authorization: maskKey(API_KEY) } : headers,
     body: body ?? null,
   }
   const started = performance.now()

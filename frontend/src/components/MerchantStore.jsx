@@ -1,4 +1,4 @@
-import { Confetti, DrawnIcon } from './effects.jsx'
+import { Aurora, Confetti, DrawnIcon } from './effects.jsx'
 import Icon from './icons.jsx'
 import StatusBadge from './StatusBadge.jsx'
 
@@ -57,11 +57,7 @@ export default function MerchantStore({ payment, busy, onPay, onRetry, onNewOrde
 
   return (
     <section className="relative overflow-hidden bg-slate-50 px-4 py-8 sm:px-8 lg:overflow-y-auto">
-      {/* Soft animated background glow */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -left-24 -top-24 h-80 w-80 animate-float rounded-full bg-indigo-300/30 blur-3xl" />
-        <div className="absolute -bottom-32 -right-20 h-96 w-96 animate-float-slow rounded-full bg-fuchsia-300/25 blur-3xl" />
-      </div>
+      <Aurora tone="light" />
 
       <div className="relative mx-auto w-full max-w-md">
         <div className="mb-6 flex animate-fade-up items-center gap-3">
@@ -82,8 +78,7 @@ export default function MerchantStore({ payment, busy, onPay, onRetry, onNewOrde
 
           <div className="space-y-4 px-6 py-5">
             <div className="flex items-center gap-4">
-              <div className="group relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-500/30">
-                <span className="absolute inset-y-0 -left-full w-1/2 animate-shimmer bg-white/30" aria-hidden="true" />
+              <div className="shine relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-500/30">
                 <svg viewBox="0 0 24 24" className="relative h-8 w-8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
                   <path d="M4 14v-2a8 8 0 0116 0v2" />
                   <rect x="3" y="14" width="4" height="6" rx="1.5" />
@@ -124,9 +119,8 @@ export default function MerchantStore({ payment, busy, onPay, onRetry, onNewOrde
                 <button
                   onClick={onPay}
                   disabled={busy}
-                  className="group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 py-4 font-semibold text-white shadow-xl shadow-indigo-600/30 transition duration-200 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-indigo-600/40 active:translate-y-0 active:scale-[0.99] disabled:cursor-wait disabled:opacity-80"
+                  className="shine group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 py-4 font-semibold text-white shadow-xl shadow-indigo-600/30 transition duration-200 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-indigo-600/40 active:translate-y-0 active:scale-[0.99] disabled:cursor-wait disabled:opacity-80"
                 >
-                  <span className="absolute inset-y-0 -left-1/2 w-1/3 animate-shimmer bg-gradient-to-r from-transparent via-white/35 to-transparent" aria-hidden="true" />
                   {busy ? (
                     <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
                   ) : (

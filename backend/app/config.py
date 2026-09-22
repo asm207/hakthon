@@ -43,6 +43,7 @@ class Settings:
         o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",") if o.strip()
     ]
     rate_limit: str = os.getenv("RATE_LIMIT", "60/minute")
+    auth_rate_limit: str = os.getenv("AUTH_RATE_LIMIT", "10/minute")
     sim_processing_delay: float = float(os.getenv("SIM_PROCESSING_DELAY", "1"))
     sim_outcome_delay: float = float(os.getenv("SIM_OUTCOME_DELAY", "2"))
     sim_timeout_delay: float = float(os.getenv("SIM_TIMEOUT_DELAY", "8"))

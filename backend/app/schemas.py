@@ -89,6 +89,36 @@ class SmokeTestResponse(BaseModel):
     steps: list[SmokeStep]
 
 
+EMAIL_PATTERN = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
+
+
+class RegisterRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    business_name: str = Field(min_length=2, max_length=80, examples=["Benghazi Tech Store"])
+    email: str = Field(max_length=255, pattern=EMAIL_PATTERN, examples=["dev@example.com"])
+    password: str = Field(min_length=8, max_length=128, description="At least 8 characters.")
+
+
+class LoginRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    email: str = Field(max_length=255, pattern=EMAIL_PATTERN)
+    password: str = Field(min_length=1, max_length=128)
+
+
+class MerchantInfo(BaseModel):
+    id: int
+    name: str
+    email: str | None
+    created_at: datetime
+
+
+class AccountResponse(BaseModel):
+    merchant: MerchantInfo
+    api_key: str = Field(description="Sandbox API key. Shown only once; signing in again issues a new one.")
+
+
 class DebugRequest(BaseModel):
     """A failed API call to be analysed by Gemini."""
     model_config = ConfigDict(extra="forbid")

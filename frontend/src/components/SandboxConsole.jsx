@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { newIdempotencyKey, newReference } from '../api/client.js'
 import { AuditSummary } from './AiAssistant.jsx'
+import { Aurora } from './effects.jsx'
 import Icon from './icons.jsx'
 import RequestLog from './RequestLog.jsx'
 import SmokeTestPanel from './SmokeTestPanel.jsx'
@@ -121,8 +122,8 @@ function RequestPlayground({ call, mode, onCreated }) {
 
 export default function SandboxConsole({ mode, onModeChange, payment, onRefund, refunding, log, call, onCreated }) {
   return (
-    <section className="console-scroll dot-grid relative bg-slate-950 px-4 py-8 text-slate-100 sm:px-8 lg:overflow-y-auto">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[36rem] -translate-x-1/2 animate-float-slow rounded-full bg-sky-500/10 blur-3xl" aria-hidden="true" />
+    <section className="console-scroll relative bg-slate-950 px-4 py-8 text-slate-100 sm:px-8 lg:overflow-y-auto">
+      <Aurora tone="dark" />
       <div className="relative mx-auto max-w-4xl space-y-5">
         <header className="flex animate-fade-up flex-wrap items-end justify-between gap-4">
           <div>

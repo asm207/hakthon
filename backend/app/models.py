@@ -1,9 +1,9 @@
-"""Database tables: merchants, transactions, idempotency_records, audit_logs."""
+"""Database tables: merchants, api_keys, transactions, idempotency_records, audit_logs."""
 import secrets
 from datetime import datetime, timezone
 from decimal import Decimal
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, Numeric, String, UniqueConstraint
+from sqlalchemy import JSON, DateTime, ForeignKey, Index, Integer, Numeric, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -19,11 +19,26 @@ def new_payment_id() -> str:
 
 class Merchant(Base):
     __tablename__ = "merchants"
+    __table_args__ = (Index("uq_merchants_email", "email", unique=True),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
-    # SHA-256 of the API key. The raw key is never stored.
+    # SHA-256 of the merchant's first API key. Raw keys are never stored.
     api_key_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    # Sign-in credentials (NULL for the built-in demo merchant). Stored lowercase / as a scrypt hash.
+    email: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ApiKey(Base):
+    """Additional API keys, issued each time a merchant signs in."""
+    __tablename__ = "api_keys"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    merchant_id: Mapped[int] = mapped_column(ForeignKey("merchants.id"), index=True)
+    key_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    label: Mapped[str] = mapped_column(String(100))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 

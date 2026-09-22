@@ -2,10 +2,168 @@
   "openapi": "3.1.0",
   "info": {
     "title": "PaySim Sandbox API",
-    "description": "\nIsolated sandbox that simulates the full payment lifecycle. **No real money, no bank connections.**\n\n**Lifecycle:** `pending \u2192 processing \u2192 success | failed | timeout`, then `success \u2192 refunded`.\n\n**Security:** Bearer API key on every request, `Idempotency-Key` on every POST that changes money state,\nstrict schema validation, and a rate limit of 60 requests/minute per API key.\n\n**Errors** always use `{\"error\": {\"code\", \"message\", \"details\"}}`:\n\n| HTTP | code | When |\n|---|---|---|\n| 400 | `IDEMPOTENCY_KEY_MISSING` | POST without an `Idempotency-Key` header |\n| 401 | `UNAUTHORIZED` | Missing or invalid Bearer API key |\n| 404 | `PAYMENT_NOT_FOUND` | Unknown payment id (or another merchant's) |\n| 409 | `IDEMPOTENCY_KEY_CONFLICT` | Same `Idempotency-Key` reused with a different body |\n| 409 | `INVALID_STATE_TRANSITION` | e.g. refunding a payment that is not `success` |\n| 422 | `VALIDATION_ERROR` | Invalid amount, currency, reference, simulation_mode or extra fields |\n| 429 | `RATE_LIMITED` | More than 60 requests/minute (see `Retry-After`) |\n| 502 | `AI_ERROR` | Gemini request failed or is overloaded |\n| 503 | `AI_UNAVAILABLE` | `GEMINI_API_KEY` is not configured |\n",
+    "description": "\nIsolated sandbox that simulates the full payment lifecycle. **No real money, no bank connections.**\n\n**Lifecycle:** `pending \u2192 processing \u2192 success | failed | timeout`, then `success \u2192 refunded`.\n\n**Accounts:** sign up at `POST /api/v1/auth/register` to get your own sandbox API key\n(`POST /api/v1/auth/login` issues a new one), then click **Authorize** and paste it.\n\n**Security:** Bearer API key on every request, `Idempotency-Key` on every POST that changes money state,\nstrict schema validation, and a rate limit of 60 requests/minute per API key.\n\n**Errors** always use `{\"error\": {\"code\", \"message\", \"details\"}}`:\n\n| HTTP | code | When |\n|---|---|---|\n| 400 | `IDEMPOTENCY_KEY_MISSING` | POST without an `Idempotency-Key` header |\n| 401 | `UNAUTHORIZED` | Missing or invalid Bearer API key |\n| 401 | `INVALID_CREDENTIALS` | Wrong email or password on sign-in |\n| 409 | `EMAIL_TAKEN` | Sign-up with an email that already has an account |\n| 404 | `PAYMENT_NOT_FOUND` | Unknown payment id (or another merchant's) |\n| 409 | `IDEMPOTENCY_KEY_CONFLICT` | Same `Idempotency-Key` reused with a different body |\n| 409 | `INVALID_STATE_TRANSITION` | e.g. refunding a payment that is not `success` |\n| 422 | `VALIDATION_ERROR` | Invalid amount, currency, reference, simulation_mode or extra fields |\n| 429 | `RATE_LIMITED` | More than 60 requests/minute (see `Retry-After`) |\n| 502 | `AI_ERROR` | Gemini request failed or is overloaded |\n| 503 | `AI_UNAVAILABLE` | `GEMINI_API_KEY` is not configured |\n",
     "version": "1.0.0"
   },
   "paths": {
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Create a sandbox merchant account",
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email already registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Sign in and receive a new sandbox API key",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "The merchant that owns the API key",
+        "operationId": "me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MerchantInfo"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/payments": {
       "post": {
         "tags": [
@@ -536,6 +694,24 @@
   },
   "components": {
     "schemas": {
+      "AccountResponse": {
+        "properties": {
+          "merchant": {
+            "$ref": "#/components/schemas/MerchantInfo"
+          },
+          "api_key": {
+            "type": "string",
+            "title": "Api Key",
+            "description": "Sandbox API key. Shown only once; signing in again issues a new one."
+          }
+        },
+        "type": "object",
+        "required": [
+          "merchant",
+          "api_key"
+        ],
+        "title": "AccountResponse"
+      },
       "AuditSummaryResponse": {
         "properties": {
           "transaction_id": {
@@ -749,6 +925,65 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "LoginRequest": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 255,
+            "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Password"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginRequest"
+      },
+      "MerchantInfo": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "created_at"
+        ],
+        "title": "MerchantInfo"
+      },
       "PaymentResponse": {
         "properties": {
           "id": {
@@ -833,6 +1068,43 @@
           "history"
         ],
         "title": "PaymentResponse"
+      },
+      "RegisterRequest": {
+        "properties": {
+          "business_name": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 2,
+            "title": "Business Name",
+            "examples": [
+              "Benghazi Tech Store"
+            ]
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 255,
+            "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            "title": "Email",
+            "examples": [
+              "dev@example.com"
+            ]
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password",
+            "description": "At least 8 characters."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "business_name",
+          "email",
+          "password"
+        ],
+        "title": "RegisterRequest"
       },
       "SmokeStep": {
         "properties": {

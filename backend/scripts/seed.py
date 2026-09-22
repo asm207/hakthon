@@ -12,7 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from sqlalchemy import create_engine, make_url, select, text  # noqa: E402
 
 from app.config import settings  # noqa: E402
-from app.database import Base, SessionLocal, engine  # noqa: E402
+from app.bootstrap import init_database  # noqa: E402
+from app.database import SessionLocal  # noqa: E402
 from app.models import Merchant  # noqa: E402
 from app.security.auth import hash_api_key  # noqa: E402
 
@@ -33,10 +34,10 @@ def ensure_database() -> None:
 
 def main() -> None:
     ensure_database()
-    Base.metadata.create_all(engine)
+    init_database()
     rotate = "--rotate" in sys.argv
     with SessionLocal() as db:
-        merchant = db.scalar(select(Merchant).where(Merchant.name == DEMO_NAME))
+        merchant = db.scalar(select(Merchant).where(Merchant.name == DEMO_NAME, Merchant.email.is_(None)))
         if merchant and not rotate:
             print(f"Merchant '{DEMO_NAME}' already exists. Run with --rotate to issue a new key.")
             return

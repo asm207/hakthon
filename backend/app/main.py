@@ -9,13 +9,16 @@ from fastapi.staticfiles import StaticFiles
 from app.bootstrap import init_database
 from app.config import settings
 from app.errors import register_error_handlers
-from app.routers import ai, payments, sandbox
+from app.routers import accounts, ai, payments, sandbox
 from app.security.rate_limit import RateLimitMiddleware
 
 DESCRIPTION = """
 Isolated sandbox that simulates the full payment lifecycle. **No real money, no bank connections.**
 
 **Lifecycle:** `pending → processing → success | failed | timeout`, then `success → refunded`.
+
+**Accounts:** sign up at `POST /api/v1/auth/register` to get your own sandbox API key
+(`POST /api/v1/auth/login` issues a new one), then click **Authorize** and paste it.
 
 **Security:** Bearer API key on every request, `Idempotency-Key` on every POST that changes money state,
 strict schema validation, and a rate limit of 60 requests/minute per API key.
@@ -26,6 +29,8 @@ strict schema validation, and a rate limit of 60 requests/minute per API key.
 |---|---|---|
 | 400 | `IDEMPOTENCY_KEY_MISSING` | POST without an `Idempotency-Key` header |
 | 401 | `UNAUTHORIZED` | Missing or invalid Bearer API key |
+| 401 | `INVALID_CREDENTIALS` | Wrong email or password on sign-in |
+| 409 | `EMAIL_TAKEN` | Sign-up with an email that already has an account |
 | 404 | `PAYMENT_NOT_FOUND` | Unknown payment id (or another merchant's) |
 | 409 | `IDEMPOTENCY_KEY_CONFLICT` | Same `Idempotency-Key` reused with a different body |
 | 409 | `INVALID_STATE_TRANSITION` | e.g. refunding a payment that is not `success` |
@@ -58,7 +63,7 @@ app.add_middleware(
                     "X-RateLimit-Reset"],
 )
 
-for module in (payments, sandbox, ai):
+for module in (accounts, payments, sandbox, ai):
     app.include_router(module.router, prefix="/api/v1")
 
 # When the built UI is present (deployment), serve it from the same server at "/".

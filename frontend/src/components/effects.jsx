@@ -1,5 +1,23 @@
 import { useMemo } from 'react'
 
+const AURORA = {
+  dark: ['bg-indigo-600/25', 'bg-fuchsia-600/20', 'bg-sky-500/15'],
+  light: ['bg-indigo-300/40', 'bg-fuchsia-300/35', 'bg-sky-300/30'],
+}
+
+/** Site-wide animated background: drifting aurora glows (+ a moving dot grid on dark surfaces). */
+export function Aurora({ tone = 'dark' }) {
+  const [a, b, c] = AURORA[tone]
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      {tone === 'dark' && <div className="dot-grid dot-grid-drift absolute inset-0" />}
+      <div className={`aurora-1 absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full blur-3xl ${a}`} />
+      <div className={`aurora-2 absolute -bottom-48 -right-40 h-[34rem] w-[34rem] rounded-full blur-3xl ${b}`} />
+      <div className={`aurora-3 absolute left-1/3 top-1/3 h-72 w-72 rounded-full blur-3xl ${c}`} />
+    </div>
+  )
+}
+
 const COLORS = ['#6366f1', '#a855f7', '#10b981', '#f59e0b', '#ec4899', '#38bdf8']
 
 /** A short one-off burst of confetti from the centre of its (relative) parent. */

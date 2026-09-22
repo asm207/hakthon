@@ -1,4 +1,26 @@
+import { useState } from 'react'
 import Icon from './icons.jsx'
+
+export function CopyButton({ text, className = '' }) {
+  const [copied, setCopied] = useState(false)
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      // clipboard blocked: the key is still visible for manual copy
+    }
+  }
+  return (
+    <button type="button" onClick={copy}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition ${
+        copied ? 'bg-emerald-500/15 text-emerald-300' : 'bg-white/10 text-slate-200 hover:bg-white/15'} ${className}`}>
+      <Icon name={copied ? 'check' : 'copy'} className="h-3.5 w-3.5" />
+      {copied ? 'Copied' : 'Copy'}
+    </button>
+  )
+}
 
 /** Dark console card with an optional icon, subtitle and header action. */
 export function Card({ icon, title, subtitle, action, children, className = '', delay = 0 }) {

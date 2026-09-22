@@ -18,6 +18,9 @@ pending ──► processing ──► success ──► refunded
 
 | Method | Path | Purpose |
 |---|---|---|
+| POST | `/api/v1/auth/register` | Create a merchant account → returns your sandbox API key |
+| POST | `/api/v1/auth/login` | Sign in → returns a new sandbox API key |
+| GET | `/api/v1/auth/me` | The merchant that owns the API key |
 | POST | `/api/v1/payments` | Create a payment (`pending`). Requires `Idempotency-Key`. |
 | GET | `/api/v1/payments/{transaction_id}` | Current status + audit history |
 | POST | `/api/v1/payments/{transaction_id}/refund` | Full refund of a `success` payment. Requires `Idempotency-Key`. |
@@ -25,7 +28,9 @@ pending ──► processing ──► success ──► refunded
 | POST | `/api/v1/ai/debug` | Gemini explains a failed API call |
 | POST | `/api/v1/ai/audit-summary/{transaction_id}` | Gemini summarises a transaction |
 
-All endpoints require `Authorization: Bearer sk_test_...`. Interactive docs: `https://127.0.0.1:8000/docs`.
+All payment, sandbox and AI endpoints require `Authorization: Bearer sk_test_...`.
+Create an account in the UI (or with `/auth/register`) to get your own key, or use the shared demo account.
+Interactive docs: `https://127.0.0.1:8000/docs`.
 
 Example:
 ```bash
