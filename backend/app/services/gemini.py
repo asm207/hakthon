@@ -38,9 +38,10 @@ AUDIT_INSTRUCTIONS = (
     "(failures, timeouts, refunds). Plain text only, no markdown.\n\n" + API_RULES
 )
 
-RETRY_ATTEMPTS = 3  # retries on temporary Gemini overload (429/500/503)
-RETRY_DELAY = 1.5   # seconds, grows with each attempt
-REQUEST_TIMEOUT_MS = 15_000  # per attempt, so the UI never hangs for long
+RETRY_ATTEMPTS = 3  # total attempts on temporary Gemini errors
+BUSY_CODES = (429, 500, 503, 504)  # overload / deadline exceeded: worth retrying
+RETRY_DELAY = 1.0   # seconds, grows with each attempt
+REQUEST_TIMEOUT_MS = 12_000  # per attempt, so the UI never hangs for long
 
 _client = None
 
@@ -69,18 +70,22 @@ def _generate(instructions: str, contents: str, schema=None):
         config.response_mime_type = "application/json"
         config.response_schema = schema
     client = _get_client()
-    for attempt in range(1, RETRY_ATTEMPTS + 1):
+    # Main model first; the last attempt uses the faster fallback model.
+    models = [settings.gemini_model] * (RETRY_ATTEMPTS - 1) + [settings.gemini_fallback_model]
+    for attempt, model in enumerate(models, start=1):
         try:
-            return client.models.generate_content(model=settings.gemini_model, contents=contents, config=config)
+            return client.models.generate_content(model=model, contents=contents, config=config)
         except genai_errors.APIError as exc:
-            busy = exc.code in (429, 500, 503)
-            if busy and attempt < RETRY_ATTEMPTS:
+            busy = exc.code in BUSY_CODES
+            if busy and attempt < len(models):
                 time.sleep(RETRY_DELAY * attempt)
                 continue
             message = ("Gemini is busy right now. Please try again in a few seconds." if busy
                        else "The Gemini request failed.")
             raise APIError(502, "AI_ERROR", message, {"reason": str(exc)[:300]})
-        except Exception as exc:
+        except Exception as exc:  # network errors and client-side timeouts
+            if attempt < len(models):
+                continue
             raise APIError(502, "AI_ERROR", "The Gemini request failed.", {"reason": str(exc)[:300]})
 
 
